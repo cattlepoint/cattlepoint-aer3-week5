@@ -327,7 +327,7 @@ Resources:
   RhsiCrmDatabaseRepository:
     Type: AWS::ECR::Repository
     Properties:
-      RepositoryName: rhsi-crm-database
+      RepositoryName: !Sub "${AWS::StackName}-database"
       ImageScanningConfiguration:
         ScanOnPush: true
       Tags:
@@ -339,7 +339,7 @@ Resources:
   RhsiCrmFrontendRepository:
     Type: AWS::ECR::Repository
     Properties:
-      RepositoryName: rhsi-crm-frontend
+      RepositoryName: !Sub "${AWS::StackName}-frontend"
       ImageScanningConfiguration:
         ScanOnPush: true
       Tags:
