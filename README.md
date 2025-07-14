@@ -141,6 +141,7 @@ branch.master.merge refs/heads/master
 ```
 
 ## 20 points – Build a CI/CD pipeline
+### Overview
 - This repo includes a cattlepoint-aer3-week5-pipeline.yaml file that defines the CI/CD pipeline for CodePipeline
 - The pipeline is triggered by changes to the git repository
 
@@ -148,6 +149,7 @@ branch.master.merge refs/heads/master
   - Source: Pulls the latest code from the git repository
   - Deploy: Deploys the cattlepoint-aer3-week5.yaml stack via CloudFormation
 
+### Steps
 * Create the GitHub App connection in AWS CodeSuite:
 - Navigate to the AWS CodeSuite settings console:
   - https://console.aws.amazon.com/codesuite/settings/connections
