@@ -211,25 +211,28 @@ CREATE_COMPLETE
 ```
 
 ## 30 points – Containerize and test your application to work in an AWS environment
-- The application Infrastructure as Code (IaC) is stored in a git repository.
-- The containers are then built and stored in Elastic Container Registry (ECR).
-- The use of ECR allows for easy upgrade/downgrade by tagging the container images with a version number.
-- The application can then be deployed to an Amazon Elastic Kubernetes Service (EKS) cluster.
+### Overview
+* The application Infrastructure as Code (IaC) is stored in a git repository.
+* The containers are then built and stored in Elastic Container Registry (ECR).
+* The use of ECR allows for easy upgrade/downgrade by tagging the container images with a version number.
+* The application can then be deployed to an Amazon Elastic Kubernetes Service (EKS) cluster.
 
 ## 20 points – Automate the construction of the infrastructure/application using Infrastructure as Code (IaC)
-- EKS is built using eksctl and CloudFormation
-- The application itself is deployed via Terraform
-- EKS can scale up and down based on the number of pods running
-- The application can be deployed to a different region or cluster for Disaster Recovery (DR) purposes
+### Overview
+* EKS is built using eksctl and CloudFormation
+* The application itself is deployed via Terraform
+* EKS can scale up and down based on the number of pods running
+* The application can be deployed to a different region or cluster for Disaster Recovery (DR) purposes
 
 ## 10 points – Test pipeline with a Blue/Green deployment and a rolling update
-- The pipeline includes a Blue/Green deployment strategy via AWS::CodeDeployBlueGreen transform
+### Overview
+* The pipeline includes a Blue/Green deployment strategy via AWS::CodeDeployBlueGreen transform
 
 ## 20 points – Design an application and infrastructure in AWS
-### Customer Relationship Management (CRM) Application:
-An internal CRM system that is used by the sales team of about 500 people worldwide to help them track all communications and relationships with their leads and clients.
-- This design confirms to the Twelve-Factor App methodology.
-- This design includes networking, security, and storage system functions.
-- This is a microservice architecture.
-- Elasticity, high availability, and fault tolerance is included.
-- The design uses EKS pods for containerization.
+### Overview
+* Customer Relationship Management (CRM) Application: An internal CRM system that is used by the sales team of about 500 people worldwide to help them track all communications and relationships with their leads and clients.
+* This design confirms to the Twelve-Factor App methodology.
+* This design includes networking, security, and storage system functions.
+* This is a microservice architecture.
+* Elasticity, high availability, and fault tolerance is included.
+* The design uses EKS pods for containerization.
