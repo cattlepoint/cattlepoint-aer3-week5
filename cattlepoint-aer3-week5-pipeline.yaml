@@ -30,7 +30,7 @@ Resources:
               Configuration:
                 ConnectionArn: !Ref ConnectionArn
                 FullRepositoryId: cattlepoint/cattlepoint-aer3-week5
-                BranchName: main
+                BranchName: master
               OutputArtifacts:
                 - Name: SourceOutput
               RoleArn: !GetAtt CodePipelineSourceActionRole.Arn
