@@ -168,7 +168,7 @@ aws cloudformation create-stack \
   --template-body file://cattlepoint-aer3-week5-pipeline.yaml \
   --capabilities CAPABILITY_IAM \
   --parameters \
-    ParameterKey=GitHubConnectionArn,ParameterValue=<your-github-connection-arn> \
+    ParameterKey=ConnectionArn,ParameterValue=<your-github-connection-arn> \
     ParameterKey=FullRepositoryId,ParameterValue=<your-username>/cattlepoint-aer3-week5
 ```
 

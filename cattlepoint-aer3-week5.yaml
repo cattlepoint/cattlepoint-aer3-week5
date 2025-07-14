@@ -312,7 +312,7 @@ Resources:
         ScanOnPush: true
       Tags:
         - Key: Name
-          Value: rhsi-crm-database
+          Value: !Sub "${AWS::StackName}-database"
         - Key: Project
           Value: !Ref AWS::StackName
 
@@ -324,6 +324,6 @@ Resources:
         ScanOnPush: true
       Tags:
         - Key: Name
-          Value: rhsi-crm-frontend
+          Value: !Sub "${AWS::StackName}-frontend"
         - Key: Project
           Value: !Ref AWS::StackName
