@@ -201,13 +201,27 @@ Resources:
             #!/bin/bash -xe
             dnf update -y
             dnf install -y python3.12 python3.12-pip python3-virtualenv
-            /usr/bin/python3.12 -m pip install virtualenvwrapper
-            echo "export AWS_USE_DUALSTACK_ENDPOINT=true" >> /home/ec2-user/.bashrc
-            echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.12" >> /home/ec2-user/.bashrc
-            echo "source /usr/local/bin/virtualenvwrapper.sh" >> /home/ec2-user/.bashrc
+            runuser -l ec2-user -c '
+              /usr/bin/python3.12 -m pip install --user virtualenvwrapper
+              echo "export AWS_USE_DUALSTACK_ENDPOINT=false" >> ~/.bashrc
+              echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.12" >> ~/.bashrc
+              echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
+            '
             dnf install docker git -y
             systemctl enable --now docker
             usermod -aG docker ec2-user
+            runser -l ec2-user -c '
+              TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" \
+                -H "X-aws-ec2-metadata-token-ttl-seconds: 300")
+              REGION=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" \
+                http://169.254.169.254/latest/meta-data/placement/region)
+              ACCOUNT_ID=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" \
+                http://169.254.169.254/latest/dynamic/instance-identity/document |
+                grep -oP '(?<="accountId" : ")[0-9]+')
+              aws ecr get-login-password --region "$REGION" | \
+                docker login --username AWS --password-stdin \
+                "${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com"
+            '
             curl -L https://github.com/docker/compose/releases/download/v2.26.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
             chmod +x /usr/local/bin/docker-compose
         InstanceMarketOptions:
