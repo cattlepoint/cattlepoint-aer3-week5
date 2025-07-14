@@ -201,7 +201,7 @@ Succeeded
 None
 ```
 
-* Check the status of the cloudformation stack that was created by the pipeline:
+* Check the status of the cloudformation stack that was created by the pipeline (this will take 20 minutes or so to complete):
 ```sh
 % aws cloudformation describe-stacks \
   --stack-name rhsi-crm-stack \
