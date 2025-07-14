@@ -63,7 +63,7 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       AvailabilityZone: !Select [1, !GetAZs ""]
-      CidrBlock: 10.1.0.0/24
+      CidrBlock: 10.2.0.0/24
       Ipv6Native: false
       AssignIpv6AddressOnCreation: true
       Ipv6CidrBlock: !Select
