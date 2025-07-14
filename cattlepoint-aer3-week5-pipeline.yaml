@@ -6,6 +6,9 @@ Parameters:
   ConnectionArn:
     Description: The CodeConnections ARN for your source repository.
     Type: String
+  FullRepositoryId:
+    Description: Full “owner/repo” identifier of the GitHub repository (use your fork).
+    Type: String
 
 Resources:
   CodePipeline:
@@ -29,7 +32,7 @@ Resources:
                 Version: "1"
               Configuration:
                 ConnectionArn: !Ref ConnectionArn
-                FullRepositoryId: cattlepoint/cattlepoint-aer3-week5
+                FullRepositoryId: !Ref FullRepositoryId
                 BranchName: master
               OutputArtifacts:
                 - Name: SourceOutput

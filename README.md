@@ -100,28 +100,31 @@ user.email=nobody@nowhere.local
 user.name=cattlepoint
 ```
 
-* If you have not done so, run the following commands in your terminal:
+* If you have not done so, run the following commands in your terminal (use your username and email address):
 ```sh
 git config --global user.email "nobody@nowhere.local"
 git config --global user.name "cattlepoint"
 ```
 * Clone the cattlepoint-aer3-week5 repository from GitHub to your local machine:
 ```sh
-gh repo clone cattlepoint/cattlepoint-aer3-week5
+gh repo fork cattlepoint/cattlepoint-aer3-week5 --clone --remote
 ```
 * Expected output (contents will vary):
 ```sh
-% gh repo clone cattlepoint/cattlepoint-aer3-week5
+% gh repo fork cattlepoint/cattlepoint-aer3-week5 --clone --remote
+✓ Forked!
 Cloning into 'cattlepoint-aer3-week5'...
 ```
 * Change into the project directory:
 ```sh
 cd cattlepoint-aer3-week5
 ```
+
 * Verify the git repository is working:
 ```sh
 git status && git config --get-regexp '^(remote|branch)\.'
 ```
+
 * Expected output (contents will vary):
 ```sh
 % git status && git config --get-regexp '^(remote|branch)\.'
@@ -129,8 +132,10 @@ On branch master
 Your branch is up to date with 'origin/master'.
 
 nothing to commit, working tree clean
-remote.origin.url https://github.com/cattlepoint/cattlepoint-aer3-week5.git
+remote.origin.url https://github.com/<your-username-here>/cattlepoint-aer3-week5.git
 remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
+remote.upstream.url https://github.com/cattlepoint/cattlepoint-aer3-week5.git
+remote.upstream.fetch +refs/heads/*:refs/remotes/origin/*
 branch.master.remote origin
 branch.master.merge refs/heads/master
 ```
@@ -153,13 +158,15 @@ branch.master.merge refs/heads/master
 - Once the connection is created, you will see a confirmation message with the connection ARN
 - Copy the connection ARN for use in the pipeline configuration
 
-* Create the CodePipeline using the cattlepoint-aer3-week5-pipeline.yaml file (replace the ARN):
+* Create the CodePipeline using the cattlepoint-aer3-week5-pipeline.yaml file (replace the ARN and username with your own):
 ```sh
 aws cloudformation create-stack \
   --stack-name rhsi-crm \
   --template-body file://cattlepoint-aer3-week5-pipeline.yaml \
   --capabilities CAPABILITY_IAM \
-  --parameters ParameterKey=GitHubConnectionArn,ParameterValue=<your-github-connection-arn>
+  --parameters \
+    ParameterKey=GitHubConnectionArn,ParameterValue=<your-github-connection-arn> \
+    ParameterKey=FullRepositoryId,ParameterValue=<your-username>/cattlepoint-aer3-week5
 ```
 
 * Verify the pipeline is created successfully:
