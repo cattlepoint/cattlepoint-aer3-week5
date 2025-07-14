@@ -226,7 +226,7 @@ Resources:
               docker build -t ${AWS::StackName}-database:latest .
               docker tag ${AWS::StackName}-database:latest \
                 "$${ACCOUNT_ID}.dkr.ecr.$${REGION}.amazonaws.com/${AWS::StackName}-database:latest"
-              docker push "${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${AWS::StackName}-database:latest"
+              docker push "$${ACCOUNT_ID}.dkr.ecr.$${REGION}.amazonaws.com/${AWS::StackName}-database:latest"
             '
             curl -L https://github.com/docker/compose/releases/download/v2.26.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
             chmod +x /usr/local/bin/docker-compose
