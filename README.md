@@ -210,7 +210,6 @@ None
 CREATE_COMPLETE
 ```
 
-
 ## 30 points – Containerize and test your application to work in an AWS environment
 - The application Infrastructure as Code (IaC) is stored in a git repository.
 - The containers are then built and stored in Elastic Container Registry (ECR).

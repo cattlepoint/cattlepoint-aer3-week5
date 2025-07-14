@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Spot-based Ephemeral Auto Recovery via ASG instance in an **IPv6-only** VPC
+Description: Deploys the ficticious Rio Health System Inc CRM application
 
 Resources:
   VPC:
@@ -41,7 +41,8 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       AvailabilityZone: !Select [0, !GetAZs ""]
-      Ipv6Native: true
+      CidrBlock: 10.1.0.0/24
+      Ipv6Native: false
       AssignIpv6AddressOnCreation: true
       Ipv6CidrBlock: !Select
         - 0
@@ -49,6 +50,7 @@ Resources:
           - !Select [0, !GetAtt VPC.Ipv6CidrBlocks]
           - 2
           - 64
+      MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -61,7 +63,8 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       AvailabilityZone: !Select [1, !GetAZs ""]
-      Ipv6Native: true
+      CidrBlock: 10.1.0.0/24
+      Ipv6Native: false
       AssignIpv6AddressOnCreation: true
       Ipv6CidrBlock: !Select
         - 1
@@ -69,6 +72,7 @@ Resources:
           - !Select [0, !GetAtt VPC.Ipv6CidrBlocks]
           - 2
           - 64
+      MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
@@ -91,6 +95,14 @@ Resources:
     Properties:
       RouteTableId: !Ref RouteTable
       DestinationIpv6CidrBlock: ::/0
+      GatewayId: !Ref InternetGateway
+
+  DefaultRouteIpv4:
+    Type: AWS::EC2::Route
+    DependsOn: VpcGatewayAttachment
+    Properties:
+      RouteTableId: !Ref RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway
 
   SubnetRouteTableAssociationA:
