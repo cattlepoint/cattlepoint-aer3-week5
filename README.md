@@ -183,7 +183,7 @@ CREATE_COMPLETE
 
 * Wait a few minutes and check that the pipeline is running:
 ```sh
-% aws codepipeline get-pipeline-state
+% aws codepipeline get-pipeline-state \
   --name rhsi-crm-pipeline \
   --query 'stageStates[0].latestExecution.status' \
   --output text
@@ -192,7 +192,7 @@ Succeeded
 
 * Check the results of the latest pipeline execution:
 ```sh
-aws codepipeline list-pipeline-executions \
+% aws codepipeline list-pipeline-executions \
   --pipeline-name rhsi-crm-pipeline \
   --max-items 1 \
   --query 'pipelineExecutionSummaries[0].status' \
