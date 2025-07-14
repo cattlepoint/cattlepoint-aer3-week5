@@ -42,11 +42,22 @@ aws sts get-caller-identity
 ```
 * Visually verify in output: arn:aws:iam::***:user/eruser315
 
-### This section installs the latest version of the Kubernetes Command Line Tool, Amazon Elastic Kubernetes Service (Amazon EKS) Command Line Tool (eksctl), Podman (Docker, project dependencies and verifies they are working
+### This section installs the latest version of the git, github client, AWS Command Line Tool, Kubernetes Command Line Tool, Amazon Elastic Kubernetes Service (Amazon EKS) Command Line Tool (eksctl), Helm, opentofu, Podman (Docker) and verifies they are working
+
 * Perform these steps in the MacOS terminal to install podman, git, github client, kubectl, and eksctl:
 ```sh
-brew update && brew install git gh kubectl eksctl podman
+brew update && brew install \
+  git            # version control
+  gh             # GitHub CLI (repos & Actions)
+  awscli         # AWS API access
+  kubectl        # Kubernetes control
+  eksctl         # spin up/teardown EKS clusters
+  helm           # Kubernetes package/upgrade manager
+  opentofu       # Infrastructure-as-Code for cluster & app
+  podman         # container build/run (or replace with docker)
+  jq yq          # JSON/YAML helpers (pipeline scripts)
 ```
+
 * Login to your github account following the instructions the below command provides:
 ```sh
 gh login
