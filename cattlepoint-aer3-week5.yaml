@@ -205,7 +205,7 @@ Resources:
               /usr/bin/python3.12 -m pip install --user virtualenvwrapper
               echo "export AWS_USE_DUALSTACK_ENDPOINT=false" >> ~/.bashrc
               echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.12" >> ~/.bashrc
-              echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
+              echo "source ~/.local/bin/virtualenvwrapper.sh" >> ~/.bashrc
             '
             dnf install docker git -y
             systemctl enable --now docker
