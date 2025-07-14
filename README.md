@@ -210,14 +210,6 @@ None
 CREATE_COMPLETE
 ```
 
-## 20 points – Design an application and infrastructure in AWS
-### Customer Relationship Management (CRM) Application:
-An internal CRM system that is used by the sales team of about 500 people worldwide to help them track all communications and relationships with their leads and clients.
-- This design confirms to the Twelve-Factor App methodology.
-- This design includes networking, security, and storage system functions.
-- This is a microservice architecture.
-- Elasticity, high availability, and fault tolerance is included.
-- The design uses EKS pods for containerization.
 
 ## 30 points – Containerize and test your application to work in an AWS environment
 - The application Infrastructure as Code (IaC) is stored in a git repository.
@@ -233,3 +225,12 @@ An internal CRM system that is used by the sales team of about 500 people worldw
 
 ## 10 points – Test pipeline with a Blue/Green deployment and a rolling update
 - The pipeline includes a Blue/Green deployment strategy via AWS::CodeDeployBlueGreen transform
+
+## 20 points – Design an application and infrastructure in AWS
+### Customer Relationship Management (CRM) Application:
+An internal CRM system that is used by the sales team of about 500 people worldwide to help them track all communications and relationships with their leads and clients.
+- This design confirms to the Twelve-Factor App methodology.
+- This design includes networking, security, and storage system functions.
+- This is a microservice architecture.
+- Elasticity, high availability, and fault tolerance is included.
+- The design uses EKS pods for containerization.
