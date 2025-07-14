@@ -135,6 +135,71 @@ branch.master.remote origin
 branch.master.merge refs/heads/master
 ```
 
+## 20 points – Build a CI/CD pipeline
+- This repo includes a cattlepoint-aer3-week5-pipeline.yaml file that defines the CI/CD pipeline for CodePipeline
+- The pipeline is triggered by changes to the git repository
+
+* The pipeline includes the following stages:
+  - Source: Pulls the latest code from the git repository
+  - Deploy: Deploys the cattlepoint-aer3-week5.yaml stack via CloudFormation
+
+* Create the GitHub App connection in AWS CodeSuite:
+- Navigate to the AWS CodeSuite settings console:
+  - https://console.aws.amazon.com/codesuite/settings/connections
+- Click on "Create connection"
+- Select "GitHub" as the connection type
+- Give the connection a name, e.g., "cattlepoint-aer3-week5-connection"
+- Follow the prompts to authorize AWS CodeSuite to access your GitHub account
+- Once the connection is created, you will see a confirmation message with the connection ARN
+- Copy the connection ARN for use in the pipeline configuration
+
+* Create the CodePipeline using the cattlepoint-aer3-week5-pipeline.yaml file (replace the ARN):
+```sh
+aws cloudformation create-stack \
+  --stack-name rhsi-crm \
+  --template-body file://cattlepoint-aer3-week5-pipeline.yaml \
+  --capabilities CAPABILITY_IAM \
+  --parameters ParameterKey=GitHubConnectionArn,ParameterValue=<your-github-connection-arn>
+```
+
+* Verify the pipeline is created successfully:
+```sh
+% aws cloudformation describe-stacks \
+  --stack-name rhsi-crm \
+  --query "Stacks[0].StackStatus" \
+  --output text
+CREATE_COMPLETE
+```
+
+* Wait a few minutes and check that the pipeline is running:
+```sh
+% aws codepipeline get-pipeline-state
+  --name rhsi-crm-pipeline \
+  --query 'stageStates[0].latestExecution.status' \
+  --output text
+Succeeded
+```
+
+* Check the results of the latest pipeline execution:
+```sh
+aws codepipeline list-pipeline-executions \
+  --pipeline-name rhsi-crm-pipeline \
+  --max-items 1 \
+  --query 'pipelineExecutionSummaries[0].status' \
+  --output text
+Succeeded
+None
+```
+
+* Check the status of the cloudformation stack that was created by the pipeline:
+```sh
+% aws cloudformation describe-stacks \
+  --stack-name rhsi-crm-stack \
+  --query "Stacks[0].StackStatus" \
+  --output text
+CREATE_COMPLETE
+```
+
 ## 20 points – Design an application and infrastructure in AWS
 ### Customer Relationship Management (CRM) Application:
 An internal CRM system that is used by the sales team of about 500 people worldwide to help them track all communications and relationships with their leads and clients.
@@ -155,10 +220,6 @@ An internal CRM system that is used by the sales team of about 500 people worldw
 - The application itself is deployed via Terraform
 - EKS can scale up and down based on the number of pods running
 - The application can be deployed to a different region or cluster for Disaster Recovery (DR) purposes
-
-## 20 points – Build a CI/CD pipeline
-- This repo includes a cattlepoint-aer3-week5-pipeline.yaml file that defines the CI/CD pipeline for CodePipeline
-- The pipeline is triggered by changes to the git repository
 
 ## 10 points – Test pipeline with a Blue/Green deployment and a rolling update
 - The pipeline includes a Blue/Green deployment strategy via AWS::CodeDeployBlueGreen transform
