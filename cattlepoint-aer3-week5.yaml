@@ -276,3 +276,27 @@ Resources:
     Properties:
       Roles:
         - !Ref InstanceRole
+
+  RhsiCrmDatabaseRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: rhsi-crm-database
+      ImageScanningConfiguration:
+        ScanOnPush: true
+      Tags:
+        - Key: Name
+          Value: rhsi-crm-database
+        - Key: Project
+          Value: !Ref AWS::StackName
+
+  RhsiCrmFrontendRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: rhsi-crm-frontend
+      ImageScanningConfiguration:
+        ScanOnPush: true
+      Tags:
+        - Key: Name
+          Value: rhsi-crm-frontend
+        - Key: Project
+          Value: !Ref AWS::StackName
