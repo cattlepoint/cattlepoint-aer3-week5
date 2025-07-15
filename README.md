@@ -220,24 +220,17 @@ CREATE_COMPLETE
 ### Steps
 * connect to the EC2 instance that is running (manually update the security group as needed):
 ```sh
-% aws ec2-instance-connect ssh --connection-type direct --instance-id $(aws ec2 describe-instances --filters "Name=tag:Project,Values=rhsi-crm-stack" "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].InstanceId" --output text) --instance-ip $(aws ec2 describe-instances --filters "Name=tag:Project,Values=rhsi-crm-stack" "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].NetworkInterfaces[].Ipv6Addresses[].Ipv6Address" --output text)
+aws ec2-instance-connect ssh --connection-type direct --instance-id $(aws ec2 describe-instances --filters "Name=tag:Project,Values=rhsi-crm-stack" "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].InstanceId" --output text) --instance-ip $(aws ec2 describe-instances --filters "Name=tag:Project,Values=rhsi-crm-stack" "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].NetworkInterfaces[].Ipv6Addresses[].Ipv6Address" --output text)
 ```
 
 * Once connected, verify the nodes, pods and svc:
 ```sh
-$ kubectl get nodes,pods,svc
-NAME                       STATUS   ROLES    AGE   VERSION
-node/i-0a7f8f3ab73f4933a   Ready    <none>   18m   v1.33.1-eks-b9364f6
-
-NAME                           READY   STATUS             RESTARTS        AGE
-pod/mariadb-67965d78d5-4m8rs   0/1     Pending            0               9m31s
-pod/suitecrm-6986f44cb-97whp   0/1     CrashLoopBackOff   5 (14s ago)     9m31s
-pod/suitecrm-6986f44cb-czqft   0/1     Error              5 (2m41s ago)   9m31s
-
-NAME                 TYPE           CLUSTER-IP      EXTERNAL-IP                                                                    PORT(S)        AGE
-service/kubernetes   ClusterIP      172.20.0.1      <none>                                                                         443/TCP        3h49m
-service/mariadb      ClusterIP      172.20.70.144   <none>                                                                         3306/TCP       9m31s
-service/suitecrm     LoadBalancer   172.20.11.143   k8s-default-suitecrm-1f76952e5d-d8cf3fcf8dbda678.elb.us-east-1.amazonaws.com   80:32689/TCP   69s
+kubectl get nodes -o wide            # NODES, STATUS, ROLES, AGE, VERSION
+kubectl get pods -o wide             # PODS, STATUS, RESTARTS, AGE, IP, NODE
+kubectl get pvc mariadb-pvc          # STATUS Bound
+kubectl get pods -l app=mariadb      # READY 1/1
+kubectl get pods -l app=suitecrm     # both replicas READY
+kubectl get svc suitecrm -w          # NLB hostname present
 ```
 
 * Get the load balancer address:
@@ -249,14 +242,21 @@ service/suitecrm     LoadBalancer   172.20.11.143   k8s-default-suitecrm-1f76952
 
 ## 20 points – Automate the construction of the infrastructure/application using Infrastructure as Code (IaC)
 ### Overview
-* EKS is built using eksctl and CloudFormation
-* The application itself is deployed via CloudFormation using the cattlepoint-aer3-week5.yaml file
+* EKS is built using using the cattlepoint-aer3-week5.yaml CloudFormation file
+* The application itself is deployed via a userdata script
 * EKS can scale up and down based on the number of pods running
 * The application can be deployed to a different region or cluster for Disaster Recovery (DR) purposes
 
 ## 10 points – Test pipeline with a Blue/Green deployment and a rolling update
 ### Overview
-* The pipeline includes a Blue/Green deployment strategy via AWS::CodeDeployBlueGreen transform
+* The pipeline includes a Blue/Green deployment strategy by:
+  * updating the CloudFormation template
+  * pushing the change to github
+  * then powering off the StackName instance
+  * asg will detect the instance failure
+  * and replace it with a new instance
+  * that reapplies the updated Kubenetes Deployment
+  * manual intervention via kubectl rollout undo deployments/suitecrm
 
 ## 20 points – Design an application and infrastructure in AWS
 ### Overview

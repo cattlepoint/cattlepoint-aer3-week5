@@ -241,6 +241,17 @@ Resources:
               eksctl utils write-kubeconfig --cluster ${AWS::StackName}-cluster --region ${AWS::Region}
             cat << EOF >> ~/suitecrm.yaml
             ---
+            apiVersion: storage.k8s.io/v1
+            kind: StorageClass
+            metadata:
+              name: gp3
+              annotations:
+                storageclass.kubernetes.io/is-default-class: "true"
+            provisioner: ebs.csi.eks.amazonaws.com   # Auto Mode driver
+            volumeBindingMode: WaitForFirstConsumer
+            parameters:
+              type: gp3
+            ---
             apiVersion: v1
             kind: PersistentVolumeClaim
             metadata:
@@ -346,7 +357,16 @@ Resources:
                 - port: 80
                   targetPort: 80
             EOF
+            kubectl delete deploy mariadb suitecrm
+            kubectl delete pvc mariadb-pvc
+            kubectl delete -f ~/suitecrm.yaml
             kubectl apply -f ~/suitecrm.yaml
+            echo "kubectl get nodes -o wide" >> ~/.bashrc
+            echo "kubectl get pods -o wide" >> ~/.bashrc
+            echo "kubectl get pvc mariadb-pvc" >> ~/.bashrc
+            echo "kubectl get pods -l app=mariadb" >> ~/.bashrc
+            echo "kubectl get pods -l app=suitecrm" >> ~/.bashrc
+            echo "kubectl get svc suitecrm" >> ~/.bashrc
             '
         InstanceMarketOptions:
           MarketType: spot
