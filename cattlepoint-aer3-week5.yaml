@@ -231,8 +231,8 @@ Resources:
             tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm -f eksctl_$PLATFORM.tar.gz
             sudo install -m 0755 /tmp/eksctl /usr/local/bin && rm -f /tmp/eksctl
             VER=$(curl -Ls https://dl.k8s.io/release/stable.txt | tr -d '\n')   # e.g. v1.33.1
-            curl -L -o kubectl         "https://dl.k8s.io/release/${VER}/bin/linux/${ARCH}/kubectl"
-            curl -L -o kubectl.sha256  "https://dl.k8s.io/release/${VER}/bin/linux/${ARCH}/kubectl.sha256"
+            curl -L -o kubectl         "https://dl.k8s.io/release/${VER}/bin/linux/$ARCH/kubectl"
+            curl -L -o kubectl.sha256  "https://dl.k8s.io/release/${VER}/bin/linux/$ARCH/kubectl.sha256"
             echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
             install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
             rm -f kubectl kubectl.sha256
