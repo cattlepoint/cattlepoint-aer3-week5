@@ -225,7 +225,19 @@ CREATE_COMPLETE
 
 * Once connected, verify the nodes, pods and svc:
 ```sh
-% kubectl get nodes,pods,svc
+$ kubectl get nodes,pods,svc
+NAME                       STATUS   ROLES    AGE   VERSION
+node/i-0a7f8f3ab73f4933a   Ready    <none>   18m   v1.33.1-eks-b9364f6
+
+NAME                           READY   STATUS             RESTARTS        AGE
+pod/mariadb-67965d78d5-4m8rs   0/1     Pending            0               9m31s
+pod/suitecrm-6986f44cb-97whp   0/1     CrashLoopBackOff   5 (14s ago)     9m31s
+pod/suitecrm-6986f44cb-czqft   0/1     Error              5 (2m41s ago)   9m31s
+
+NAME                 TYPE           CLUSTER-IP      EXTERNAL-IP                                                                    PORT(S)        AGE
+service/kubernetes   ClusterIP      172.20.0.1      <none>                                                                         443/TCP        3h49m
+service/mariadb      ClusterIP      172.20.70.144   <none>                                                                         3306/TCP       9m31s
+service/suitecrm     LoadBalancer   172.20.11.143   k8s-default-suitecrm-1f76952e5d-d8cf3fcf8dbda678.elb.us-east-1.amazonaws.com   80:32689/TCP   69s
 ```
 
 * Get the load balancer address:
