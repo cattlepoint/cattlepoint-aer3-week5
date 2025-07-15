@@ -274,13 +274,13 @@ Resources:
                         - containerPort: 3306
                       env:
                         - name: MYSQL_ROOT_PASSWORD
-                          value: "rootpassword"
+                          value: rootpassword
                         - name: MYSQL_DATABASE
-                          value: "appdb"
+                          value: appdb
                         - name: MYSQL_USER
-                          value: "appuser"
+                          value: appuser
                         - name: MYSQL_PASSWORD
-                          value: "apppassword"
+                          value: apppassword
                       volumeMounts:
                         - name: data
                           mountPath: /var/lib/mysql
@@ -329,7 +329,7 @@ Resources:
                         - name: SUITECRM_DATABASE_USER
                           value: appuser
                         - name: SUITECRM_DATABASE_PASSWORD
-                          value: apassword
+                          value: apppassword
             ---
             apiVersion: v1
             kind: Service
