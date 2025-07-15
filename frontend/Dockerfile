@@ -1,30 +1,22 @@
-# SugarCRM frontend container
-FROM php:8.2-apache
+# SugarCRM CE 6.5.26 – PHP 7.4 + Apache
+FROM php:7.4-apache
 
-# Required OS packages for PHP extensions
+# core runtime deps
 RUN apt-get update && apt-get install -y \
-    libpng-dev libjpeg-dev libfreetype6-dev libzip-dev \
-    libicu-dev libxslt1-dev libgmp-dev libxml2-dev \
-    libonig-dev libcurl4-openssl-dev \
-    libc-client-dev libkrb5-dev \
+    libpng-dev libjpeg-dev libfreetype6-dev libzip-dev libicu-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-    && docker-php-ext-install -j$(nproc) \
-    bcmath curl gd gmp imap intl soap xml zip opcache \
-    && pecl install redis && docker-php-ext-enable redis \
+    && docker-php-ext-install -j$(nproc) gd intl mbstring bcmath curl soap xml zip \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy SugarCRM source (assumes it lives in ./sugarcrm)
-COPY ./sugarcrm /var/www/html
-
-# Ownership and basic permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && find /var/www/html -type d -exec chmod 755 {} \; \
-    && find /var/www/html -type f -exec chmod 644 {} \;
-
-# Custom PHP settings
-COPY docker/php.ini /usr/local/etc/php/conf.d/sugar.ini
+# pull the public CE archive, unpack, fix perms
+ARG SUGAR_VER=6.5.26
+RUN curl -L -o /tmp/sugar.zip \
+    "https://downloads.sourceforge.net/project/sugarcrm/1%20-%20SugarCRM%206.5.X/SugarCommunityEdition-6.5.X/SugarCE-Full-${SUGAR_VER}.zip" \
+    && unzip /tmp/sugar.zip -d /var/www/html \
+    && mv /var/www/html/SugarCE-Full-${SUGAR_VER}/* /var/www/html/ \
+    && rm -rf /tmp/sugar.zip /var/www/html/SugarCE-Full-${SUGAR_VER} \
+    && chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
 CMD ["apache2-foreground"]
