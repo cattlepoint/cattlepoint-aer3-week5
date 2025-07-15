@@ -225,13 +225,20 @@ CREATE_COMPLETE
 
 * Once connected, verify the nodes, pods and svc:
 ```sh
-kubectl get nodes,pods,svc
+% kubectl get nodes,pods,svc
 ```
+
+* Get the load balancer address:
+```sh
+% kubectl get svc rhsi-crm-svc -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+```
+
+* Open the load balancer address in a web browser to access the application.
 
 ## 20 points – Automate the construction of the infrastructure/application using Infrastructure as Code (IaC)
 ### Overview
 * EKS is built using eksctl and CloudFormation
-* The application itself is deployed via Terraform
+* The application itself is deployed via CloudFormation using the cattlepoint-aer3-week5.yaml file
 * EKS can scale up and down based on the number of pods running
 * The application can be deployed to a different region or cluster for Disaster Recovery (DR) purposes
 
