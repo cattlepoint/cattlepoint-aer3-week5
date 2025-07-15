@@ -538,13 +538,6 @@ Resources:
       ClusterName: !Ref EKSCluster
       ResolveConflicts: PRESERVE
 
-  EbsCsiDriverAddon:
-    Type: AWS::EKS::Addon
-    Properties:
-      AddonName: aws-ebs-csi-driver
-      ClusterName: !Ref EKSCluster
-      ResolveConflicts: PRESERVE
-
   InstanceAccessEntry:
     Type: AWS::EKS::AccessEntry
     Properties:
