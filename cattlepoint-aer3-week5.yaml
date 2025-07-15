@@ -248,7 +248,7 @@ Resources:
             spec:
               accessModes:
                 - ReadWriteOnce
-              storageClassName: gp3
+              storageClassName: gp2
               resources:
                 requests:
                   storage: 10Gi
@@ -534,6 +534,13 @@ Resources:
     Type: AWS::EKS::Addon
     Properties:
       AddonName: eks-pod-identity-agent
+      ClusterName: !Ref EKSCluster
+      ResolveConflicts: PRESERVE
+
+  EbsCsiDriverAddon:
+    Type: AWS::EKS::Addon
+    Properties:
+      AddonName: aws-ebs-csi-driver
       ClusterName: !Ref EKSCluster
       ResolveConflicts: PRESERVE
 
