@@ -230,7 +230,8 @@ kubectl get pods -o wide             # PODS, STATUS, RESTARTS, AGE, IP, NODE
 kubectl get pvc mariadb-pvc          # STATUS Bound
 kubectl get pods -l app=mariadb      # READY 1/1
 kubectl get pods -l app=suitecrm     # both replicas READY
-kubectl get svc suitecrm -w          # NLB hostname present
+kubectl get svc suitecrm             # NLB hostname present
+kubectl get svc suitecrm -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' # NLB hostname
 ```
 
 * Get the load balancer address:
