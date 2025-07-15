@@ -234,9 +234,21 @@ kubectl get svc suitecrm             # NLB hostname present
 kubectl get svc suitecrm -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' # NLB hostname
 ```
 
-* Get the load balancer address:
+* Example output (will vary):
 ```sh
-% kubectl get svc rhsi-crm-svc -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+NAME                  STATUS   ROLES    AGE     VERSION               INTERNAL-IP   EXTERNAL-IP     OS-IMAGE                                          KERNEL-VERSION   CONTAINER-RUNTIME
+i-09801c076c89cb8ee   Ready    <none>   9m56s   v1.33.1-eks-b9364f6   10.0.2.251    18.215.149.70   Bottlerocket (EKS Auto) 2025.7.4 (aws-k8s-1.33)   6.12.31          containerd://1.7.27+bottlerocket
+NAME                        READY   STATUS    RESTARTS       AGE   IP          NODE                  NOMINATED NODE   READINESS GATES
+mariadb-67965d78d5-tj6m2    1/1     Running   0              10m   10.0.2.18   i-09801c076c89cb8ee   <none>           <none>
+suitecrm-6fd5fc95c6-zflhj   1/1     Running   1 (9m6s ago)   10m   10.0.2.17   i-09801c076c89cb8ee   <none>           <none>
+NAME          STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+mariadb-pvc   Bound    pvc-5b7a8f18-8387-4d5b-98f1-04fcee593071   10Gi       RWO            gp3            <unset>                 10m
+NAME                       READY   STATUS    RESTARTS   AGE
+mariadb-67965d78d5-tj6m2   1/1     Running   0          10m
+NAME                        READY   STATUS    RESTARTS       AGE
+suitecrm-6fd5fc95c6-zflhj   1/1     Running   1 (9m8s ago)   10m
+NAME       TYPE           CLUSTER-IP      EXTERNAL-IP                                                                    PORT(S)        AGE
+suitecrm   LoadBalancer   172.20.42.242   k8s-default-suitecrm-84ffa6f9ba-5305b136a319816e.elb.us-east-1.amazonaws.com   80:30107/TCP   10m
 ```
 
 * Open the load balancer address in a web browser to access the application.
