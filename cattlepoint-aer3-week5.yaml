@@ -223,11 +223,11 @@ Resources:
               aarch64) ARCH=arm64 ;;
               *) echo "Unsupported architecture: $ARCH"; exit 1 ;;
             esac
-            PLATFORM="$(uname -s)_${ARCH}"
-            curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_${PLATFORM}.tar.gz"
+            PLATFORM="$(uname -s)_$ARCH"
+            curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
             curl -sL  "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" \
-              | grep "${PLATFORM}" | sha256sum --check
-            tar -xzf eksctl_${PLATFORM}.tar.gz -C /tmp && rm -f eksctl_${PLATFORM}.tar.gz
+              | grep "$PLATFORM" | sha256sum --check
+            tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm -f eksctl_$PLATFORM.tar.gz
             sudo install -m 0755 /tmp/eksctl /usr/local/bin && rm -f /tmp/eksctl
         InstanceMarketOptions:
           MarketType: spot
