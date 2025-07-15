@@ -305,3 +305,16 @@ suitecrm-8586b4fb84-plqzt   1/1     Running     0          1s      10.0.1.65   i
 * This is a microservice architecture.
 * Elasticity, high availability, and fault tolerance is included.
 * The design uses EKS pods for containerization.
+
+## Bonus section
+### Cleanup
+* Delete the SuiteCRM deployment:
+```sh
+kubectl delete deployment mariadb suitecrm
+kubectl delete pvc mariadb-pvc
+kubectl delete -f ~/suitecrm.yaml
+```
+* Delete the ECR images via the console in both repos
+* Delete the StackName-stack via the console
+* Delete the StackName CodePipeline bucket contents via the console
+* Delete the StackName CodePipeline CloudFormation stack via the console
