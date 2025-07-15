@@ -239,6 +239,111 @@ Resources:
             rm -f kubectl kubectl.sha256
             runuser -l ec2-user -c '
               eksctl utils write-kubeconfig --cluster ${AWS::StackName}-cluster --region ${AWS::Region}
+              cat << EOF >> ~/suitecrm.yaml
+              ---
+              apiVersion: v1
+              kind: PersistentVolumeClaim
+              metadata:
+                name: mariadb-pvc
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                storageClassName: gp3
+                resources:
+                  requests:
+                    storage: 10Gi
+              ---
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: mariadb
+              spec:
+                replicas: 1
+                selector:
+                  matchLabels:
+                    app: mariadb
+                template:
+                  metadata:
+                    labels:
+                      app: mariadb
+                  spec:
+                    containers:
+                      - name: mariadb
+                        image: ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${AWS::StackName}-database:latest
+                        ports:
+                          - containerPort: 3306
+                        env:
+                          - name: MYSQL_ROOT_PASSWORD
+                            value: "rootpassword"
+                          - name: MYSQL_DATABASE
+                            value: "appdb"
+                          - name: MYSQL_USER
+                            value: "appuser"
+                          - name: MYSQL_PASSWORD
+                            value: "apppassword"
+                        volumeMounts:
+                          - name: data
+                            mountPath: /var/lib/mysql
+                    volumes:
+                      - name: data
+                        persistentVolumeClaim:
+                          claimName: mariadb-pvc
+              ---
+              apiVersion: v1
+              kind: Service
+              metadata:
+                name: mariadb
+              spec:
+                selector:
+                  app: mariadb
+                ports:
+                  - port: 3306
+                    targetPort: 3306
+              ---
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: suitecrm
+              spec:
+                replicas: 2
+                selector:
+                  matchLabels:
+                    app: suitecrm
+                template:
+                  metadata:
+                    labels:
+                      app: suitecrm
+                  spec:
+                    containers:
+                      - name: suitecrm
+                        image: ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${AWS::StackName}-frontend:latest
+                        ports:
+                          - containerPort: 80
+                        env:
+                          - name: SUITECRM_DATABASE_HOST
+                            value: mariadb
+                          - name: SUITECRM_DATABASE_PORT_NUMBER
+                            value: "3306"
+                          - name: SUITECRM_DATABASE_NAME
+                            value: appdb
+                          - name: SUITECRM_DATABASE_USER
+                            value: appuser
+                          - name: SUITECRM_DATABASE_PASSWORD
+                            value: apassword
+              ---
+              apiVersion: v1
+              kind: Service
+              metadata:
+                name: suitecrm
+              spec:
+                type: LoadBalancer
+                selector:
+                  app: suitecrm
+                ports:
+                  - port: 80
+                    targetPort: 80
+              EOF
+              kubectl apply -f ~/suitecrm.yaml
             '
         InstanceMarketOptions:
           MarketType: spot

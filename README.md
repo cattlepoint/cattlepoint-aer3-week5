@@ -215,7 +215,27 @@ CREATE_COMPLETE
 * The application Infrastructure as Code (IaC) is stored in a git repository.
 * The containers are then built and stored in Elastic Container Registry (ECR).
 * The use of ECR allows for easy upgrade/downgrade by tagging the container images with a version number.
-* The application can then be deployed to an Amazon Elastic Kubernetes Service (EKS) cluster.
+* The application is then deployed to an Amazon Elastic Kubernetes Service (EKS) cluster.
+
+### Steps
+* connect to the EC2 instance that is running (manually update the security group as needed):
+```sh
+% aws ec2 describe-instances \
+  --filters "Name=tag:Project,Values=rhsi-crm-stack" \
+           "Name=instance-state-name,Values=running" \
+  --query "Reservations[].Instances[].{InstanceId:InstanceId,IPv6:NetworkInterfaces[].Ipv6Addresses[].Ipv6Address}" \
+  --output text
+
+# i-0352
+# IPV6    2600:1f10:
+
+% aws aws ec2-instance-connect ssh \
+  --connection-type direct \
+  --instance-id <instance-id> \
+  --instance-ip <instance-ipv6-address>
+```
+
+
 
 ## 20 points – Automate the construction of the infrastructure/application using Infrastructure as Code (IaC)
 ### Overview
