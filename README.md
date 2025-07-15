@@ -305,6 +305,7 @@ suitecrm-8586b4fb84-plqzt   1/1     Running     0          1s      10.0.1.65   i
 * This is a microservice architecture.
 * Elasticity, high availability, and fault tolerance is included.
 * The design uses EKS pods for containerization.
+* The design uses EKS Auto Mode for scaling.
 
 ## Bonus section
 ### Cleanup
