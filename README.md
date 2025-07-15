@@ -252,6 +252,9 @@ suitecrm   LoadBalancer   172.20.42.242   k8s-default-suitecrm-84ffa6f9ba-5305b1
 ```
 
 * Open the load balancer address in a web browser to access the application.
+* The credentials are:
+  * Username: admin
+  * Password: adminpassword
 
 ## 20 points – Automate the construction of the infrastructure/application using Infrastructure as Code (IaC)
 ### Overview
