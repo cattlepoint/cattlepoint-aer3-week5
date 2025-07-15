@@ -56,6 +56,10 @@ Resources:
           Value: !Ref AWS::StackName
         - Key: Project
           Value: !Ref AWS::StackName
+        - Key: kubernetes.io/cluster/${AWS::StackName}-cluster
+          Value: shared
+        - Key: kubernetes.io/role/elb
+          Value: "1"
 
   PublicSubnetB:
     Type: AWS::EC2::Subnet
@@ -78,6 +82,10 @@ Resources:
           Value: !Ref AWS::StackName
         - Key: Project
           Value: !Ref AWS::StackName
+        - Key: kubernetes.io/cluster/${AWS::StackName}-cluster
+          Value: shared
+        - Key: kubernetes.io/role/elb
+          Value: "1"
 
   RouteTable:
     Type: AWS::EC2::RouteTable
