@@ -202,27 +202,20 @@ Resources:
             systemctl enable --now docker
             usermod -aG docker ec2-user
             runuser -l ec2-user -c '
-              TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" \
-                -H "X-aws-ec2-metadata-token-ttl-seconds: 300")
-              REGION=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" \
-                http://169.254.169.254/latest/meta-data/placement/region)
-              ACCOUNT_ID=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" \
-                http://169.254.169.254/latest/dynamic/instance-identity/document |
-                jq -r .accountId)
-              aws ecr get-login-password --region "$REGION" | \
+              aws ecr get-login-password --region ${AWS::Region} | \
                 docker login --username AWS --password-stdin \
-                "$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com"
+                "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com"
               git clone https://github.com/cattlepoint/cattlepoint-aer3-week5.git
               cd ~/cattlepoint-aer3-week5/database
               docker build -t ${AWS::StackName}-database:latest .
               docker tag ${AWS::StackName}-database:latest \
-                "$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/${AWS::StackName}-database:latest"
-              docker push "$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/${AWS::StackName}-database:latest"
+                "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${AWS::StackName}-database:latest"
+              docker push "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${AWS::StackName}-database:latest"
               cd ~/cattlepoint-aer3-week5/frontend/
               docker build -t ${AWS::StackName}-frontend:latest .
               docker tag ${AWS::StackName}-frontend:latest \
-                "$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/${AWS::StackName}-frontend:latest"
-              docker push "$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/${AWS::StackName}-frontend:latest"
+                "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${AWS::StackName}-frontend:latest"
+              docker push "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${AWS::StackName}-frontend:latest"
             '
             curl -L https://github.com/docker/compose/releases/download/v2.26.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
             chmod +x /usr/local/bin/docker-compose
@@ -245,11 +238,7 @@ Resources:
             install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
             rm -f kubectl kubectl.sha256
             runuser -l ec2-user -c '
-              TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" \
-                -H "X-aws-ec2-metadata-token-ttl-seconds: 300")
-              REGION=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" \
-                http://169.254.169.254/latest/meta-data/placement/region)
-              eksctl utils write-kubeconfig --cluster ${AWS::StackName}-cluster --region $REGION
+              eksctl utils write-kubeconfig --cluster ${AWS::StackName}-cluster --region ${AWS::Region}
             '
         InstanceMarketOptions:
           MarketType: spot
