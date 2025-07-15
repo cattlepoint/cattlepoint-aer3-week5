@@ -1,20 +1,17 @@
-FROM php:7.4-apache
+# SuiteCRM application container
+FROM bitnami/suitecrm:latest
 
-RUN apt-get update && apt-get install -y \
-    libpng-dev libjpeg-dev libfreetype6-dev \
-    libzip-dev libicu-dev libonig-dev \
-    libcurl4-openssl-dev libxml2-dev
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install -j$(nproc) gd intl mbstring bcmath curl soap xml zip
-RUN a2enmod rewrite
-RUN rm -rf /var/lib/apt/lists/*
-ARG SUGAR_VER=6.5.26
-RUN curl -Lf --fail -o /tmp/sugar.zip \
-    "https://downloads.sourceforge.net/project/sugarcrm/1%20-%20SugarCRM%206.5.X/SugarCommunityEdition-${SUGAR_VER}/SugarCE-${SUGAR_VER}.zip?download"
-RUN apt-get update && apt-get install -y unzip
-RUN unzip /tmp/sugar.zip -d /var/www/html
-RUN mv /var/www/html/SugarCE-Full-${SUGAR_VER}/* /var/www/html/
-RUN rm -rf /tmp/sugar.zip /var/www/html/SugarCE-Full-${SUGAR_VER}
-RUN chown -R www-data:www-data /var/www/html
-EXPOSE 80
-CMD ["apache2-foreground"]
+# ----------  DB connection details ----------
+ENV \
+    SUITECRM_DATABASE_HOST=mariadb \
+    SUITECRM_DATABASE_PORT_NUMBER=3306 \
+    SUITECRM_DATABASE_NAME=appdb \
+    SUITECRM_DATABASE_USER=appuser \
+    SUITECRM_DATABASE_PASSWORD=apppassword \
+    \
+    # (optional) first-login admin credentials
+    SUITECRM_USERNAME=admin \
+    SUITECRM_PASSWORD=adminpassword \
+    SUITECRM_EMAIL=admin@example.com
+
+EXPOSE 80 443
