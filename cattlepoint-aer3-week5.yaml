@@ -403,6 +403,8 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonEKSWorkerNodeMinimalPolicy
         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPullOnly
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
 
   EKSCluster:
     Type: AWS::EKS::Cluster
