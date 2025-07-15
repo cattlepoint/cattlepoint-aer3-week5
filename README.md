@@ -220,19 +220,7 @@ CREATE_COMPLETE
 ### Steps
 * connect to the EC2 instance that is running (manually update the security group as needed):
 ```sh
-% aws ec2 describe-instances \
-  --filters "Name=tag:Project,Values=rhsi-crm-stack" \
-           "Name=instance-state-name,Values=running" \
-  --query "Reservations[].Instances[].{InstanceId:InstanceId,IPv6:NetworkInterfaces[].Ipv6Addresses[].Ipv6Address}" \
-  --output text
-
-# i-0352
-# IPV6    2600:1f10:
-
-% aws aws ec2-instance-connect ssh \
-  --connection-type direct \
-  --instance-id <instance-id> \
-  --instance-ip <instance-ipv6-address>
+% aws ec2-instance-connect ssh --connection-type direct --instance-id $(aws ec2 describe-instances --filters "Name=tag:Project,Values=rhsi-crm-stack" "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].InstanceId" --output text) --instance-ip $(aws ec2 describe-instances --filters "Name=tag:Project,Values=rhsi-crm-stack" "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].NetworkInterfaces[].Ipv6Addresses[].Ipv6Address" --output text)
 ```
 
 * Once connected, verify the nodes, pods and svc:
