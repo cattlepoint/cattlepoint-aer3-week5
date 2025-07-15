@@ -173,6 +173,7 @@ Resources:
 
   LaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
+    DependsOn: EKSCluster
     Properties:
       LaunchTemplateName: !Sub "${AWS::StackName}-lt"
       LaunchTemplateData:
@@ -229,6 +230,13 @@ Resources:
               | grep "$PLATFORM" | sha256sum --check
             tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm -f eksctl_$PLATFORM.tar.gz
             sudo install -m 0755 /tmp/eksctl /usr/local/bin && rm -f /tmp/eksctl
+            runuser -l ec2-user -c '
+              TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" \
+                -H "X-aws-ec2-metadata-token-ttl-seconds: 300")
+              REGION=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" \
+                http://169.254.169.254/latest/meta-data/placement/region)
+              eksctl utils write-kubeconfig --cluster ${AWS::StackName}-cluster --region $REGION
+            '
         InstanceMarketOptions:
           MarketType: spot
           SpotOptions:
