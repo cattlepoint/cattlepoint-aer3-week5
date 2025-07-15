@@ -123,61 +123,19 @@ Resources:
       GroupDescription: SSH from Starlink IPV6 addresses
       VpcId: !Ref VPC
       SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
+        - IpProtocol: -1
           CidrIpv6: 2a0d:3340::/29
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
+        - IpProtocol: -1
           CidrIpv6: 2406:2d40::/32
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
+        - IpProtocol: -1
           CidrIpv6: 2c0f:2a80::/32
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
+        - IpProtocol: -1
           CidrIpv6: 2803:9810::/32
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
+        - IpProtocol: -1
           CidrIpv6: 2605:59c0::/28
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
+        - IpProtocol: -1
           CidrIpv6: 2606:ee40::/32
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIpv6: 2620:134:B000::/40
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIpv6: 2a0d:3340::/29
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIpv6: 2406:2d40::/32
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIpv6: 2c0f:2a80::/32
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIpv6: 2803:9810::/32
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIpv6: 2605:59c0::/28
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIpv6: 2606:ee40::/32
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
+        - IpProtocol: -1
           CidrIpv6: 2620:134:B000::/40
       Tags:
         - Key: Name
@@ -191,13 +149,7 @@ Resources:
       GroupDescription: SSH from T-Mobile USA IPV6 addresses
       VpcId: !Ref VPC
       SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIpv6: 2607:FB90::/28
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
+        - IpProtocol: -1
           CidrIpv6: 2607:FB90::/28
       Tags:
         - Key: Name
@@ -211,13 +163,7 @@ Resources:
       GroupDescription: SSH from AT&T Wireless IPV6 addresses
       VpcId: !Ref VPC
       SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIpv6: 2600:300::/24
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
+        - IpProtocol: -1
           CidrIpv6: 2600:300::/24
       Tags:
         - Key: Name
