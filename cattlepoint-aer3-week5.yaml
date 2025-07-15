@@ -254,7 +254,7 @@ Resources:
         BlockDeviceMappings:
           - DeviceName: /dev/xvda
             Ebs:
-              VolumeSize: 10
+              VolumeSize: 20
               VolumeType: gp3
               DeleteOnTermination: true
         IamInstanceProfile:
@@ -283,9 +283,9 @@ Resources:
       LaunchTemplate:
         LaunchTemplateId: !Ref LaunchTemplate
         Version: !GetAtt LaunchTemplate.LatestVersionNumber
-      MinSize: 1
-      MaxSize: 1
-      DesiredCapacity: 1
+      MinSize: 2
+      MaxSize: 2
+      DesiredCapacity: 2
       HealthCheckType: EBS
       HealthCheckGracePeriod: 60
       Tags:
