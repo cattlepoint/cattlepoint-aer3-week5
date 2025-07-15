@@ -329,7 +329,8 @@ Resources:
                     - name: suitecrm
                       image: ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${AWS::StackName}-frontend:latest
                       ports:
-                        - containerPort: 80
+                        - name: http
+                          containerPort: 8080
                       env:
                         - name: SUITECRM_DATABASE_HOST
                           value: mariadb
@@ -357,7 +358,7 @@ Resources:
                 app: suitecrm
               ports:
                 - port: 80
-                  targetPort: 80
+                  targetPort: 8080
             EOF
             kubectl apply -f ~/suitecrm.yaml
             echo "kubectl get nodes -o wide" >> ~/.bashrc
