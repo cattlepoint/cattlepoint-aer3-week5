@@ -3,7 +3,7 @@ FROM php:7.4-apache
 RUN apt-get update && apt-get install -y \
     libpng-dev libjpeg-dev libfreetype6-dev \
     libzip-dev libicu-dev libonig-dev \
-    libcurl4-openssl-dev
+    libcurl4-openssl-dev libxml2-dev
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install -j$(nproc) gd intl mbstring bcmath curl soap xml zip
 RUN a2enmod rewrite
