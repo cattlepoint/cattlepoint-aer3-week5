@@ -235,7 +235,10 @@ CREATE_COMPLETE
   --instance-ip <instance-ipv6-address>
 ```
 
-
+* Once connected, verify the nodes, pods and svc:
+```sh
+kubectl get nodes,pods,svc
+```
 
 ## 20 points – Automate the construction of the infrastructure/application using Infrastructure as Code (IaC)
 ### Overview
