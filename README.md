@@ -259,6 +259,44 @@ kubectl get svc suitecrm -o jsonpath='{.status.loadBalancer.ingress[0].hostname}
   * that reapplies the updated Kubenetes Deployment
   * manual intervention via kubectl rollout undo deployments/suitecrm
 
+### Example update:
+* Update the frontend Dockerfile and publish it
+* Login to the instance
+* cd into the project directory:
+```sh
+cd ~/cattlepoint-aer3-week5/frontend/
+git pull
+docker build -t rhsi-crm-stack-frontend:latest .
+docker tag rhsi-crm-stack-frontend:latest "<account>.dkr.ecr.us-east-1.amazonaws.com/<stackname>-frontend:latest"
+docker push "<account>.dkr.ecr.us-east-1.amazonaws.com/<stackname>-frontend:latest"
+kubectl get pods -l app=suitecrm -o wide
+kubectl rollout restart deployment suitecrm
+kubectl rollout status deployment suitecrm
+kubectl get pods -l app=suitecrm -o wide
+```
+* example output (will vary):
+```sh
+$ cd cattlepoint-aer3-week5/frontend/
+[ec2-user@ip-10-0-1-203 frontend]$ kubectl get pods -l app=suitecrm -o wide
+kubectl rollout restart deployment suitecrm
+kubectl rollout status deployment suitecrm
+kubectl get pods -l app=suitecrm -o wide
+NAME                        READY   STATUS    RESTARTS   AGE     IP          NODE                  NOMINATED NODE   READINESS GATES
+suitecrm-64cd65459c-n2sdl   1/1     Running   0          4m53s   10.0.1.68   i-063367c8e0a274043   <none>           <none>
+suitecrm-64cd65459c-tz2c8   1/1     Running   0          4m55s   10.0.1.67   i-063367c8e0a274043   <none>           <none>
+deployment.apps/suitecrm restarted
+Waiting for deployment "suitecrm" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "suitecrm" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "suitecrm" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "suitecrm" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "suitecrm" rollout to finish: 1 old replicas are pending termination...
+deployment "suitecrm" successfully rolled out
+NAME                        READY   STATUS      RESTARTS   AGE     IP          NODE                  NOMINATED NODE   READINESS GATES
+suitecrm-64cd65459c-n2sdl   0/1     Completed   0          4m56s   10.0.1.68   i-063367c8e0a274043   <none>           <none>
+suitecrm-8586b4fb84-4r28n   1/1     Running     0          2s      10.0.1.64   i-063367c8e0a274043   <none>           <none>
+suitecrm-8586b4fb84-plqzt   1/1     Running     0          1s      10.0.1.65   i-063367c8e0a274043   <none>           <none>
+```
+
 ## 20 points – Design an application and infrastructure in AWS
 ### Overview
 * Customer Relationship Management (CRM) Application: An internal CRM system that is used by the sales team of about 500 people worldwide to help them track all communications and relationships with their leads and clients.
